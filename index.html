@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hi-course · 영주제일고 교육과정 환승역</title>
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%230052a4'/><text x='32' y='44' text-anchor='middle' font-size='38' font-family='Arial,sans-serif' font-weight='900' fill='%23fff'>H</text></svg>" />
+<style>
+  /* ===== Base ===== */
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0b1020; --bg2:#11183a; --ink:#e8ecff; --mute:#9aa3c7;
+    --tile:#1a2247; --tile2:#0e1430;
+    --line-h:#0052a4; --line-2:#00a84d; --line-3:#ef7c1c;
+    --line-4:#00a4e3; --line-5:#996cac; --line-6:#cd7c2f; --line-7:#747f00;
+    --amber:#ffb84a; --red:#ff4d4d; --green:#22e08a; --yellow:#f5d31a;
+    --metal:#cdd3df; --metal-d:#7a8398; --metal-l:#eef1f7;
+  }
+  html,body{height:100%}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:#070a18; color:var(--ink); overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none}
+  .skip{position:absolute; left:-9999px}
+  .skip:focus{left:8px; top:8px; background:#fff; color:#000; padding:6px 10px; z-index:9999; border-radius:6px}
+
+  /* ===== Header ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(7,10,24,.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid #1c2348;
+  }
+  .nav{max-width:1280px; margin:0 auto; padding:14px 20px;
+    display:flex; align-items:center; gap:18px;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
+  .brand .mark{
+    width:34px;height:34px;border-radius:50%; background:var(--line-h);
+    display:grid;place-items:center; color:#fff; font-weight:900; font-size:18px;
+    border:2px solid #fff; box-sizing:border-box;
+  }
+  .brand small{display:block; font-weight:500; color:var(--mute); font-size:11px; letter-spacing:.4px}
+  .clock{
+    margin-left:auto; padding:4px 10px; border:1px solid #2a3460; border-radius:6px;
+    font-family:'JetBrains Mono',Consolas,monospace; color:var(--green);
+    background:#0a0f24; font-size:13px; letter-spacing:1px;
+  }
+
+  /* ===== Tunnel background ===== */
+  .tunnel{
+    position:relative; overflow:hidden;
+    background:linear-gradient(180deg,#0a0f24 0%, #070a18 60%, #050813 100%);
+  }
+  .tunnel::before{
+    /* ceiling lights flow */
+    content:""; position:absolute; inset:0 0 70% 0;
+    background:repeating-linear-gradient(90deg,
+      rgba(255,255,255,.10) 0 90px,
+      transparent 90px 180px);
+    animation: lightFlow 1.4s linear infinite;
+    pointer-events:none;
+  }
+  .tunnel::after{
+    /* side walls perspective tiles */
+    content:""; position:absolute; inset:0;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.04) 0 2px, transparent 2px) 0 0/40px 40px,
+      linear-gradient(0deg, rgba(255,255,255,.03) 0 2px, transparent 2px) 0 0/40px 40px;
+    transform:perspective(800px) rotateX(20deg);
+    transform-origin:50% 100%;
+    opacity:.35; pointer-events:none;
+  }
+  @keyframes lightFlow{ to{ background-position:-180px 0 } }
+
+  /* ===== Hero ===== */
+  .hero{max-width:1280px; margin:0 auto; padding:36px 20px 16px;
+    display:grid; grid-template-columns:1.05fr 1fr; gap:28px; align-items:start; position:relative}
+  .hero h1{font-size:34px; line-height:1.2; letter-spacing:-.4px}
+  .hero h1 span{color:var(--amber)}
+  .hero p.lead{margin-top:12px; color:var(--mute); font-size:15px; line-height:1.7; max-width:48ch}
+
+  /* ===== LED Sign (Transfer station) ===== */
+  .sign{
+    background:#05080f; border:1px solid #1d2548; border-radius:10px;
+    overflow:hidden; min-height:300px;
+  }
+  .sign-head{
+    display:flex; align-items:center; gap:10px; padding:10px 14px;
+    background:#0a1024; border-bottom:1px solid #1d2548;
+  }
+  .lines{display:flex; gap:6px}
+  .ln{
+    width:28px;height:28px;border-radius:50%; display:grid;place-items:center;
+    color:#fff; font-weight:900; font-size:13px;
+    border:2px solid #fff; box-sizing:border-box;
+  }
+  .ln.h, .ln.l1{background:var(--line-h)} .ln.l2{background:var(--line-2)} .ln.l3{background:var(--line-3)}
+  .ln.l4{background:var(--line-4)} .ln.l5{background:var(--line-5)} .ln.l6{background:var(--line-6)} .ln.l7{background:var(--line-7)}
+  .stn{display:flex; flex-direction:column; line-height:1.15; flex:1}
+  .stn b{font-size:14px}
+  .stn small{color:var(--mute); font-size:11px; letter-spacing:.4px}
+  .xfer{
+    font-size:11px; letter-spacing:1px; color:#0a1024; background:var(--amber);
+    padding:4px 8px; border-radius:4px; font-weight:800;
+  }
+  .matrix{
+    position:relative; padding:12px 14px;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,.06) 1px, transparent 1.5px) 0 0/4px 4px,
+      #06091a;
+  }
+  .row{
+    display:grid; grid-template-columns:54px 36px 1fr 80px 80px;
+    align-items:center; gap:8px; padding:8px 4px;
+    border-bottom:1px dashed #1a2248;
+    font-family:'JetBrains Mono',Consolas,monospace;
+  }
+  .row:last-child{border-bottom:none}
+  .ord{font-size:11px; color:var(--mute); letter-spacing:1px}
+  .row .ln{width:24px;height:24px;font-size:11px; border-width:1.5px}
+  .dest{
+    color:var(--amber); font-size:13.5px; letter-spacing:1.5px;
+    text-shadow:0 0 6px rgba(255,184,74,.5);
+  }
+  .dest small{display:block; font-size:10.5px; color:#cfd6ff; opacity:.7; letter-spacing:.5px; text-shadow:none}
+  .eta{ text-align:right; font-size:14px; color:#bfe9ff }
+  .eta.arr{ color:var(--red); animation:blink 1s infinite }
+  .eta.soon{ color:var(--green) }
+  .st{
+    text-align:center; font-size:10px; letter-spacing:1px;
+    border:1px solid #2a3460; border-radius:4px; padding:3px 4px;
+    color:var(--mute);
+  }
+  .st.now{ color:#fff; background:var(--red); border-color:var(--red); animation:blink 1s infinite }
+  .st.wait{ color:#0a1024; background:var(--green); border-color:var(--green); font-weight:700 }
+  @keyframes blink{ 50%{ opacity:.35 } }
+
+  .ticker{
+    border-top:1px solid #1d2548; padding:0; background:#0a1024;
+    overflow:hidden; position:relative; height:28px;
+  }
+  .ticker .tag{
+    position:absolute; left:0; top:0; bottom:0; padding:0 10px;
+    background:var(--red); color:#fff; font-size:10px; font-weight:800;
+    display:flex; align-items:center; letter-spacing:1px; z-index:2;
+  }
+  .ticker .flow{
+    position:absolute; left:60px; right:0; top:0; bottom:0;
+    display:flex; align-items:center; white-space:nowrap;
+    color:#ffd9a8; font-size:12px; letter-spacing:1px;
+    animation:tickerMove 26s linear infinite;
+  }
+  @keyframes tickerMove{ from{ transform:translateX(100%) } to{ transform:translateX(-100%) } }
+
+  /* ===== Platform Scene ===== */
+  .platform{
+    position:relative; max-width:1280px; margin:8px auto 0; padding:0 20px 0;
+  }
+  .scene{
+    position:relative; height:340px; border-radius:12px; overflow:hidden;
+    background:
+      linear-gradient(180deg, #0a0f24 0%, #0a0f24 38%, #1a1f3a 38%, #1a1f3a 100%);
+    border:1px solid #1d2548;
+  }
+  /* Catenary */
+  .catenary{
+    position:absolute; left:0; right:0; top:14px; height:2px;
+    background:#3a4376;
+  }
+  .catenary::after{
+    content:""; position:absolute; left:0; right:0; top:8px; height:1px;
+    background:#2c345e;
+  }
+  /* Tunnel ceiling lamps */
+  .lamps{
+    position:absolute; left:0; right:0; top:0; height:18px;
+    background:repeating-linear-gradient(90deg,
+      rgba(255,255,200,.18) 0 80px,
+      transparent 80px 170px);
+    animation:lightFlow 1.2s linear infinite;
+  }
+  /* Tracks */
+  .track-area{
+    position:absolute; left:0; right:0; bottom:0; height:38%;
+    background:linear-gradient(180deg,#0e1330 0%, #07091c 100%);
+  }
+  .rail{
+    position:absolute; left:0; right:0; height:3px;
+    background:linear-gradient(180deg,#bcc4dc,#6b7397);
+    box-shadow:0 0 4px rgba(255,255,255,.2);
+  }
+  .rail.r1{ bottom:36% }
+  .rail.r2{ bottom:18% }
+  .third-rail{
+    position:absolute; left:0; right:0; bottom:11%; height:2px;
+    background:#f5d31a; opacity:.55;
+  }
+  .ties{
+    position:absolute; left:0; right:0; bottom:8%; height:14px;
+    background:repeating-linear-gradient(90deg,
+      #2a3460 0 36px, transparent 36px 72px);
+    opacity:.6;
+    animation:tieMove .9s linear infinite; animation-play-state:paused;
+  }
+  .scene.moving .ties{ animation-play-state:running }
+  @keyframes tieMove{ to{ background-position:-72px 0 } }
+
+  /* Platform floor + tactile */
+  .platform-floor{
+    position:absolute; left:0; right:0; bottom:0; height:38%;
+    background:linear-gradient(180deg,#2a2f4a 0%, #1a1f3a 100%);
+    border-top:2px solid #0b1124;
+  }
+  .tactile{
+    position:absolute; left:0; right:0; bottom:calc(38% - 8px); height:6px;
+    background:repeating-linear-gradient(90deg,
+      var(--yellow) 0 14px, #b89c10 14px 18px);
+    box-shadow:0 0 8px rgba(245,211,26,.3);
+  }
+  .platform-line{
+    position:absolute; left:0; right:0; bottom:calc(38% - 14px); height:2px;
+    background:var(--line-h); opacity:.6;
+  }
+
+  /* ===== TRAIN (detailed) ===== */
+  .train{
+    position:absolute;
+    bottom:calc(38% + 4px);
+    left:0;
+    width:1180px; height:140px;
+    display:flex; align-items:flex-end; gap:4px;
+    transform:translateX(110%);
+    animation: trainCycle 14s linear infinite;
+  }
+  .scene.reduced .train{ animation:none; transform:translateX(0) }
+
+  @keyframes trainCycle{
+    0%   { transform:translateX(110%) }           /* off-screen right */
+    18%  { transform:translateX(-60px) }          /* arriving */
+    22%  { transform:translateX(-60px) }          /* stopped */
+    78%  { transform:translateX(-60px) }          /* doors open during this window */
+    82%  { transform:translateX(-60px) }          /* closing */
+    100% { transform:translateX(-115%) }          /* depart left */
+  }
+
+  /* Car base */
+  .car{
+    position:relative;
+    width:280px; height:108px;
+    background:
+      linear-gradient(180deg,#eef1f7 0%, #cdd3df 50%, #9aa3b8 100%);
+    border:1px solid #6b7397;
+    border-radius:14px 14px 6px 6px;
+    box-shadow: inset 0 -8px 0 rgba(0,0,0,.08), inset 0 2px 0 rgba(255,255,255,.6);
+  }
+  /* line color stripe */
+  .car::before{
+    content:""; position:absolute; left:0; right:0; top:62%;
+    height:8px; background:var(--line-h);
+    border-top:1px solid rgba(0,0,0,.15); border-bottom:1px solid rgba(0,0,0,.15);
+  }
+  /* thin secondary stripe */
+  .car::after{
+    content:""; position:absolute; left:0; right:0; top:74%;
+    height:2px; background:#0a2c5e; opacity:.55;
+  }
+  /* Side number plate */
+  .plate{
+    position:absolute; left:10px; top:8px; width:30px;height:14px;
+    background:#0a1024; color:#fff; font-size:9px; font-weight:800;
+    border-radius:2px; display:grid; place-items:center;
+    font-family:'JetBrains Mono',monospace; letter-spacing:1px;
+  }
+  /* Roof unit (HVAC) */
+  .roof{
+    position:absolute; left:10%; right:10%; top:-10px; height:10px;
+    background:linear-gradient(180deg,#b8bfd2,#7a8398);
+    border-radius:4px 4px 0 0; border:1px solid #5c6480;
+  }
+  .roof::before, .roof::after{
+    content:""; position:absolute; top:2px; width:18px; height:6px;
+    background:#4a5270; border-radius:2px;
+  }
+  .roof::before{ left:18% }
+  .roof::after{ right:18% }
+
+  /* Pantograph (only on lead car) */
+  .panto{
+    position:absolute; top:-32px; left:38%; width:60px; height:32px;
+  }
+  .panto::before{
+    content:""; position:absolute; bottom:0; left:0; right:0; height:2px; background:#2a3460;
+  }
+  .panto::after{
+    /* diamond shape */
+    content:""; position:absolute; bottom:2px; left:8px; width:44px; height:26px;
+    border:2px solid #2a3460; border-top:none;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    background:transparent;
+  }
+  .panto i{
+    position:absolute; top:0; left:14px; width:32px; height:2px;
+    background:#1a1f3a;
+  }
+  .spark{
+    position:absolute; top:-2px; left:46%; width:6px; height:6px;
+    background:#fff; border-radius:50%;
+    box-shadow:0 0 10px 3px #9ecbff, 0 0 18px 6px rgba(120,180,255,.6);
+    opacity:0; animation:spark 2.6s infinite;
+  }
+  @keyframes spark{ 0%,100%{opacity:0} 12%,15%{opacity:1} 17%{opacity:0} }
+
+  /* Windows */
+  .win{
+    position:absolute; top:14px; height:32px;
+    background:linear-gradient(180deg,#cfeaff 0%, #7fb5e6 60%, #5c8fc0 100%);
+    border:1px solid #4a6a8c; border-radius:4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+    overflow:hidden;
+  }
+  .win::after{
+    /* reflection */
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(115deg, rgba(255,255,255,.6) 10%, transparent 30%, rgba(255,255,255,.2) 60%, transparent 80%);
+  }
+  /* silhouettes inside windows */
+  .win .sil{
+    position:absolute; bottom:0; width:7px; height:18px; background:#1a2247; border-radius:50% 50% 0 0;
+  }
+
+  /* Doors */
+  .door{
+    position:absolute; top:12px; height:78px; width:34px;
+    background:linear-gradient(180deg,#dfe4ef 0%, #aeb6c8 100%);
+    border:1px solid #5c6480; border-radius:3px;
+    overflow:hidden;
+    transition:transform .6s ease;
+  }
+  .door .gw{ /* door glass window */
+    position:absolute; top:8px; left:4px; right:4px; height:28px;
+    background:linear-gradient(180deg,#cfeaff,#7fb5e6);
+    border:1px solid #4a6a8c; border-radius:2px;
+  }
+  .door .handle{
+    position:absolute; top:46px; left:50%; transform:translateX(-50%);
+    width:14px; height:3px; background:#2a3460; border-radius:2px;
+  }
+  .door.left{  }
+  .door.right{ }
+  /* line stripe across doors */
+  .door::after{
+    content:""; position:absolute; left:0; right:0; top:62%;
+    height:8px; background:var(--line-h);
+  }
+
+  /* OPEN doors animation timed with train stop */
+  .train.boarding .door.left{  transform:translateX(-30px) }
+  .train.boarding .door.right{ transform:translateX(30px) }
+
+  /* sync doors with cycle via keyframes (since transform is on train, use separate animation per door) */
+  .door.left{  animation: doorL 14s linear infinite }
+  .door.right{ animation: doorR 14s linear infinite }
+  @keyframes doorL{
+    0%, 22% { transform:translateX(0) }
+    28%, 72%{ transform:translateX(-30px) }
+    78%, 100%{ transform:translateX(0) }
+  }
+  @keyframes doorR{
+    0%, 22% { transform:translateX(0) }
+    28%, 72%{ transform:translateX(30px) }
+    78%, 100%{ transform:translateX(0) }
+  }
+  .scene.reduced .door.left, .scene.reduced .door.right{ animation:none }
+
+  /* Bogie (truck) - wheel assembly */
+  .bogie{
+    position:absolute; bottom:-14px; width:90px; height:24px;
+    background:linear-gradient(180deg,#3a4163,#1a1f3a);
+    border-radius:6px; border:1px solid #0b0f22;
+  }
+  .bogie.b1{ left:18px }
+  .bogie.b2{ right:18px }
+  .wheel{
+    position:absolute; bottom:-6px; width:20px; height:20px;
+    background:radial-gradient(circle,#cdd3df 30%, #4a5270 60%, #1a1f3a 100%);
+    border:1px solid #0b0f22; border-radius:50%;
+  }
+  .wheel::before{
+    content:""; position:absolute; inset:4px; border-radius:50%;
+    background:repeating-conic-gradient(#cdd3df 0 18deg, #4a5270 18deg 36deg);
+  }
+  .bogie .wheel.w1{ left:8px } .bogie .wheel.w2{ right:8px }
+  .scene.moving .wheel::before{ animation:spin .35s linear infinite }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+
+  /* Coupler between cars */
+  .coupler{
+    position:absolute; right:-4px; top:50%; width:8px; height:6px;
+    background:#2a3460; border-radius:2px;
+  }
+
+  /* ===== Lead car nose ===== */
+  .car.lead{
+    width:190px;
+    border-radius:60px 16px 8px 8px;
+    background:
+      radial-gradient(120% 100% at 0% 50%, #eef1f7 0%, #cdd3df 55%, #9aa3b8 100%);
+  }
+  .car.lead::before{
+    /* nose stripe wraps */
+    left:8px; top:60%;
+  }
+  .nose-band{
+    position:absolute; left:0; top:0; bottom:0; width:50px;
+    background:linear-gradient(180deg, transparent 0 28%, var(--line-h) 28% 58%, transparent 58% 100%);
+    border-radius:60px 0 0 8px;
+    opacity:.9;
+  }
+  /* Windshield */
+  .windshield{
+    position:absolute; left:14px; top:14px; width:60px; height:34px;
+    background:linear-gradient(180deg,#0a1024 0%, #20305a 80%);
+    border:1px solid #3a4376; border-radius:24px 6px 6px 6px;
+    overflow:hidden;
+  }
+  .windshield::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(110deg, rgba(255,255,255,.45) 5%, transparent 30%);
+  }
+  .driver{
+    position:absolute; bottom:0; left:18px; width:14px; height:18px;
+    background:#0a1024; border-radius:50% 50% 0 0;
+  }
+  .driver::before{ /* head */
+    content:""; position:absolute; top:-8px; left:2px; width:10px;height:10px;
+    background:#f1c9a5; border-radius:50%;
+  }
+  /* Headlights */
+  /* Train headlights: scoped to avoid collision with card headers */
+  .train .head{
+    position:absolute; left:6px; width:10px; height:10px;
+    border-radius:50%;
+    background:radial-gradient(circle,#fff 0%, #ffe9a8 50%, transparent 80%);
+    box-shadow:0 0 18px 6px rgba(255,233,168,.45);
+  }
+  .train .head.up{ top:58px }
+  .train .head.dn{ top:74px }
+  .beam{
+    position:absolute; left:18px; top:60px; width:120px; height:30px;
+    background:linear-gradient(90deg, rgba(255,233,168,.45), transparent 80%);
+    clip-path: polygon(0 40%, 0 60%, 100% 100%, 100% 0);
+    opacity:.85; pointer-events:none;
+  }
+  /* Lead car route mark */
+  .route-mark{
+    position:absolute; right:14px; top:10px;
+    width:22px;height:22px; border-radius:50%;
+    background:var(--line-h); color:#fff; font-weight:900; font-size:12px;
+    display:grid; place-items:center; border:2px solid #fff;
+  }
+  /* Lead car doors (single set) */
+  .lead .door{ width:30px; height:70px; top:16px }
+  .lead .door.left{ left:96px }
+  .lead .door.right{ left:126px }
+
+  /* Antenna on roof of lead car */
+  .antenna{
+    position:absolute; top:-18px; right:30px; width:2px; height:18px;
+    background:#2a3460;
+  }
+  .antenna::after{
+    content:""; position:absolute; top:-4px; left:-3px; width:8px;height:8px;
+    background:#2a3460; border-radius:50%;
+  }
+
+  /* Mid car windows / doors layout */
+  .car .win.w1{ left:14px; width:30px }
+  .car .win.w2{ left:50px; width:42px }
+  .car .door.left{ left:96px }
+  .car .door.right{ left:130px }
+  .car .win.w3{ left:170px; width:42px }
+  .car .win.w4{ left:218px; width:48px }
+
+  /* Lead car windows simplified */
+  .lead .win.lw1{ left:80px; width:14px; top:18px; height:24px }
+  .lead .win.lw2{ left:160px; width:24px; top:18px; height:24px }
+
+  /* ===== PEOPLE ===== */
+  .crowd{
+    position:absolute; left:0; right:0; bottom:calc(38% - 22px); height:80px;
+    pointer-events:none;
+  }
+  .person{
+    position:absolute; bottom:0;
+    width:24px; height:62px;
+    transform-origin:50% 100%;
+    animation: idle 3.4s ease-in-out infinite;
+  }
+  .person.b{ animation-duration:4.1s }
+  .person.c{ animation-duration:3.7s; animation-direction:alternate }
+  @keyframes idle{
+    0%,100%{ transform:rotate(-1.2deg) translateY(0) }
+    50%   { transform:rotate(1.2deg) translateY(-1px) }
+  }
+  /* head */
+  .person .h{
+    position:absolute; left:50%; top:0; transform:translateX(-50%);
+    width:12px; height:12px; border-radius:50%;
+    background:#f1c9a5; border:1px solid #c79b73;
+  }
+  .person.dark .h{ background:#b88460; border-color:#7a553a }
+  .person.light .h{ background:#fadcc0; border-color:#d4ab87 }
+  /* hair */
+  .person .hair{
+    position:absolute; left:50%; top:-1px; transform:translateX(-50%);
+    width:13px; height:7px; border-radius:7px 7px 2px 2px;
+    background:#2a2236;
+  }
+  .person.brown .hair{ background:#5a3a22 }
+  .person.gray .hair{ background:#b8b0a8 }
+  .person.long .hair{ height:14px; border-radius:6px 6px 4px 4px; top:0 }
+  .person.cap .hair{ background:#2a3460; height:7px; width:15px; border-radius:8px 8px 2px 2px }
+  .person.cap::before{
+    content:""; position:absolute; left:50%; top:3px; transform:translateX(-50%);
+    width:18px; height:3px; background:#2a3460; border-radius:0 0 3px 3px; z-index:2;
+  }
+  /* body (torso) */
+  .person .b1{
+    position:absolute; left:50%; top:11px; transform:translateX(-50%);
+    width:18px; height:26px; border-radius:5px 5px 3px 3px;
+    background:#3a4670;
+  }
+  /* arms */
+  .person .arm{
+    position:absolute; top:13px; width:4px; height:20px; border-radius:3px;
+    background:inherit;
+  }
+  .person .arm.l{ left:0px;  background:#3a4670 }
+  .person .arm.r{ right:0px; background:#3a4670 }
+  /* legs */
+  .person .l1, .person .l2{
+    position:absolute; top:36px; width:6px; height:20px; border-radius:2px 2px 1px 1px;
+    background:#1a1f3a;
+  }
+  .person .l1{ left:5px }
+  .person .l2{ right:5px }
+  /* feet */
+  .person .l1::after, .person .l2::after{
+    content:""; position:absolute; bottom:-2px; left:-1px; width:8px; height:3px;
+    background:#0b0f22; border-radius:2px;
+  }
+
+  /* outfit color variants */
+  .person.red .b1, .person.red .arm{ background:#c83a3a }
+  .person.emerald .b1, .person.emerald .arm{ background:#1f9d6e }
+  .person.mustard .b1, .person.mustard .arm{ background:#d6a52a }
+  .person.purple .b1, .person.purple .arm{ background:#7a4ca8 }
+  .person.pink .b1, .person.pink .arm{ background:#e07ba0 }
+  .person.charcoal .b1, .person.charcoal .arm{ background:#2e3550 }
+  .person.beige .b1, .person.beige .arm{ background:#c9a87a }
+  .person.navy .b1, .person.navy .arm{ background:#1a2e6e }
+  .person.green .b1, .person.green .arm{ background:#2e7d4a }
+  .person.olive .b1, .person.olive .arm{ background:#6a7038 }
+
+  /* Uniform: white shirt + dark pants (student) */
+  .person.uniform .b1{ background:#f3f5fb }
+  .person.uniform .arm{ background:#f3f5fb }
+  .person.uniform .b1::after{
+    content:""; position:absolute; left:50%; top:0; transform:translateX(-50%);
+    width:6px; height:14px; background:#1a2e6e; border-radius:0 0 2px 2px;
+  }
+  .person.uniform .l1, .person.uniform .l2{ background:#202a4a }
+
+  /* Suit */
+  .person.suit .b1{ background:#222a44 }
+  .person.suit .arm{ background:#222a44 }
+  .person.suit .b1::before{
+    content:""; position:absolute; left:50%; top:2px; transform:translateX(-50%);
+    width:4px; height:18px; background:#f3f5fb;
+  }
+  .person.suit .b1::after{
+    content:""; position:absolute; left:50%; top:2px; transform:translateX(-50%);
+    width:2px; height:6px; background:#c83a3a;  /* tie */
+  }
+
+  /* accessories */
+  .person .bag-r{
+    position:absolute; right:-3px; top:18px; width:8px; height:14px;
+    background:#2a3460; border-radius:2px;
+  }
+  .person .bag-r::before{
+    content:""; position:absolute; left:50%; top:-6px; transform:translateX(-50%);
+    width:1px; height:8px; background:#2a3460;
+  }
+  .person .bag-l{
+    position:absolute; left:-3px; top:18px; width:8px; height:14px;
+    background:#7a4ca8; border-radius:2px;
+  }
+  .person .backpack{
+    position:absolute; left:50%; top:14px; transform:translateX(-50%);
+    width:14px; height:18px; background:#3a2a1a; border-radius:3px; z-index:-1;
+  }
+  .person .phone{
+    position:absolute; left:50%; top:20px; transform:translateX(-50%);
+    width:4px; height:6px; background:#0a1024; border-radius:1px;
+    box-shadow:0 0 5px rgba(120,255,180,.7);
+  }
+  .person .phone::after{
+    content:""; position:absolute; inset:1px; background:#22e08a; border-radius:1px;
+  }
+  .person .lug{
+    position:absolute; right:-12px; top:24px; width:10px; height:22px;
+    background:#1a1f3a; border:1px solid #0b0f22; border-radius:2px;
+  }
+  .person .lug::before{
+    content:""; position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+    width:2px; height:12px; background:#2a3460;
+  }
+  .person .lug::after{
+    content:""; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    width:8px; height:2px; background:#2a3460; border-radius:2px;
+  }
+  /* shadow */
+  .person .shadow{
+    position:absolute; left:50%; bottom:-3px; transform:translateX(-50%);
+    width:30px; height:5px; background:rgba(0,0,0,.45);
+    border-radius:50%; filter:blur(1.5px); z-index:-2;
+  }
+
+  /* === Boarding/alighting movements === */
+  /* People who BOARD: walk right toward door, then disappear */
+  .person.board{
+    animation: walkR 14s linear infinite, bob .42s ease-in-out infinite;
+  }
+  /* People who ALIGHT: appear from door at top of platform area, walk left/right to position */
+  .person.alight{
+    animation: alightFromDoor 14s linear infinite, bob .42s ease-in-out infinite;
+    opacity:0;
+  }
+  .scene.reduced .person.board,
+  .scene.reduced .person.alight{ animation:none; opacity:1 }
+
+  @keyframes bob{
+    0%,100%{ transform:translateY(0) }
+    50%   { transform:translateY(-2px) }
+  }
+
+  /* Each boarding person needs its own translateX path — use CSS vars */
+  @keyframes walkR{
+    0%, 22%   { transform:translateX(0); opacity:1 }                          /* waiting */
+    28%       { transform:translateX(0); opacity:1 }                          /* doors open */
+    45%       { transform:translateX(var(--boardX, 120px)); opacity:1 }       /* walking to door */
+    50%       { transform:translateX(var(--boardX, 120px)); opacity:0 }       /* boarded (disappear) */
+    78%       { transform:translateX(var(--boardX, 120px)); opacity:0 }
+    82%       { transform:translateX(var(--boardX, 120px)); opacity:0 }
+    100%      { transform:translateX(0); opacity:1 }                          /* reset for next cycle */
+  }
+  @keyframes alightFromDoor{
+    0%, 28%   { transform:translateX(0); opacity:0 }                          /* hidden while train approaches */
+    32%       { transform:translateX(0); opacity:1 }                          /* appear at door */
+    50%       { transform:translateX(var(--alightX, -100px)); opacity:1 }     /* walk away from door */
+    72%       { transform:translateX(var(--alightX, -100px)); opacity:1 }     /* idle on platform */
+    78%       { transform:translateX(var(--alightX, -100px)); opacity:1 }
+    82%       { transform:translateX(var(--alightX, -100px)); opacity:0 }     /* fade out (leaves platform) */
+    100%      { transform:translateX(0); opacity:0 }
+  }
+
+  /* ===== Cards: paper ticket style ===== */
+  .lines-grid{
+    max-width:1280px; margin:28px auto 0; padding:0 20px 44px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(min(100%, 286px), 1fr));
+    gap:18px;
+  }
+  .card{
+    --ticket-line:var(--line-h);
+    --ticket-paper:#fff3d0;
+    --ticket-paper-2:#fde7ad;
+    --ticket-ink:#172137;
+    --ticket-muted:#5e6678;
+    --ticket-hole:#070a18;
+    position:relative;
+    display:flex; flex-direction:column; gap:9px;
+    min-height:156px; min-width:0;
+    padding:18px 18px 16px 88px;
+    color:var(--ticket-ink); cursor:pointer;
+    border:1px solid rgba(255,232,164,.92); border-radius:18px;
+    overflow:visible; isolation:isolate;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(255,255,255,.82) 0 16%, transparent 28%),
+      radial-gradient(circle at 82% 120%, rgba(150,93,12,.10) 0 20%, transparent 38%),
+      repeating-linear-gradient(0deg, rgba(91,62,24,.035) 0 1px, transparent 1px 4px),
+      linear-gradient(135deg, var(--ticket-paper), var(--ticket-paper-2));
+    box-shadow:
+      0 16px 34px rgba(0,0,0,.30),
+      inset 0 1px 0 rgba(255,255,255,.80),
+      inset 0 -1px 0 rgba(96,61,14,.12);
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease;
+  }
+  .card::before,
+  .card::after{
+    content:""; position:absolute; left:56px;
+    width:24px; height:24px; border-radius:50%;
+    background:var(--ticket-hole);
+    z-index:5;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+    pointer-events:none;
+  }
+  .card::before{top:-12px}
+  .card::after{bottom:-12px}
+  .card:hover, .card:focus-visible{
+    transform:translateY(-5px);
+    border-color:rgba(255,244,203,.98);
+    box-shadow:
+      0 22px 42px rgba(0,0,0,.36),
+      0 0 0 1px rgba(255,255,255,.06),
+      inset 0 1px 0 rgba(255,255,255,.86),
+      inset 0 -1px 0 rgba(96,61,14,.14);
+    filter:saturate(1.04);
+  }
+  .card:focus-visible{ outline:3px solid rgba(255,184,74,.90); outline-offset:5px }
+  .card:active{ transform:translateY(-2px) scale(.995) }
+  .card .bar{
+    position:absolute; left:0; top:0; bottom:0; width:68px;
+    border-radius:17px 0 0 17px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.22), transparent 26%),
+      linear-gradient(135deg, var(--ticket-line), var(--ticket-line));
+    box-shadow:inset -12px 0 20px rgba(0,0,0,.16);
+    overflow:hidden;
+    z-index:1;
+  }
+  .card .bar::before{
+    content:"TICKET";
+    position:absolute; left:50%; top:68px;
+    transform:translateX(-50%);
+    writing-mode:vertical-rl; text-orientation:mixed;
+    color:rgba(255,255,255,.92);
+    font-family:'JetBrains Mono',Consolas,monospace;
+    font-size:10px; font-weight:800; letter-spacing:.14em;
+    white-space:nowrap;
+  }
+  .card .bar::after{
+    content:"";
+    position:absolute; top:14px; right:0; bottom:14px; width:1px;
+    background:repeating-linear-gradient(180deg,
+      rgba(255,255,255,.82) 0 4px,
+      transparent 4px 9px);
+    opacity:.9;
+  }
+  .card .head{
+    position:static; width:auto; height:auto; left:auto; top:auto;
+    display:block; min-width:0; z-index:2;
+    background:none; border-radius:0; box-shadow:none;
+  }
+  .card .ln{
+    position:absolute; left:17px; top:18px;
+    width:34px; height:34px; min-width:34px; flex:0 0 34px;
+    aspect-ratio:1;
+    color:var(--ticket-line); background:rgba(255,255,255,.94);
+    border:2px solid rgba(255,255,255,.92); border-radius:50%;
+    font-size:14px; font-weight:950;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,.22),
+      inset 0 0 0 2px var(--ticket-line);
+    z-index:4;
+  }
+  .card .ln::after{
+    content:"호선";
+    position:absolute; left:50%; top:42px;
+    transform:translateX(-50%);
+    color:rgba(255,255,255,.94);
+    font-size:9px; font-weight:800; line-height:1;
+    letter-spacing:-.05em;
+    text-shadow:0 1px 2px rgba(0,0,0,.26);
+    white-space:nowrap;
+  }
+  .card .name{
+    font-weight:900; font-size:16px; line-height:1.32; min-width:0;
+    color:var(--ticket-ink); letter-spacing:-.18px;
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+  .card .name::before{
+    content:"BOARDING PASS";
+    display:block; margin-bottom:5px;
+    font-family:'JetBrains Mono',Consolas,monospace;
+    font-size:10px; font-weight:800; letter-spacing:.18em;
+    color:var(--ticket-line); opacity:.86;
+  }
+  .card .desc{
+    color:var(--ticket-muted); font-size:13px; line-height:1.62; min-width:0; z-index:2;
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+  .card .meta{
+    position:relative; z-index:2;
+    margin-top:auto; padding-top:11px; padding-right:58px;
+    border-top:1px dashed rgba(23,33,55,.26);
+    color:#6b5f4b;
+    font-family:'JetBrains Mono',Consolas,monospace;
+    font-size:11px; font-weight:700; letter-spacing:.03em;
+    white-space:normal; overflow-wrap:anywhere;
+  }
+  .card .meta::before{
+    content:"GATE";
+    display:inline-block; margin-right:7px; padding:3px 6px 2px;
+    border-radius:999px;
+    background:var(--ticket-line); color:#fff;
+    font-size:9px; font-weight:900; letter-spacing:.08em;
+    vertical-align:1px;
+  }
+  .card .meta::after{
+    content:"VALID";
+    position:absolute; right:0; bottom:-1px;
+    padding:2px 7px 1px;
+    border:1px solid currentColor; border-radius:999px;
+    color:var(--ticket-line); opacity:.42;
+    font-size:10px; font-weight:900; letter-spacing:.08em;
+    transform:rotate(-7deg);
+  }
+  .card[href="#"] .meta::after{ content:"SOON"; opacity:.50 }
+  .card[data-line="1"]{ --ticket-line:var(--line-h) }
+  .card[data-line="2"]{ --ticket-line:var(--line-2) }
+  .card[data-line="3"]{ --ticket-line:var(--line-3) }
+  .card[data-line="4"]{ --ticket-line:var(--line-4) }
+  .card[data-line="5"]{ --ticket-line:var(--line-5) }
+  .card[data-line="6"]{ --ticket-line:var(--line-6) }
+  .card[data-line="7"]{ --ticket-line:var(--line-7) }
+
+  /* Toast */
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:#0a1024; color:#fff; border:1px solid #2a3460; border-radius:8px;
+    padding:10px 14px; font-size:13px; opacity:0; pointer-events:none;
+    transition:opacity .2s, transform .2s; z-index:200;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }
+
+  /* Footer */
+  footer{ color:var(--mute); font-size:12px; text-align:center; padding:14px 12px 28px }
+
+
+  /* ===== Layout refinements / responsive safety ===== */
+  .brand{min-width:0}
+  .brand > div:last-child{min-width:0; line-height:1.15}
+  .brand small{white-space:normal}
+  .clock, .xfer{white-space:nowrap}
+
+  .hero h1{font-size:clamp(30px, 3.1vw, 40px)}
+  .sign{box-shadow:0 16px 44px rgba(0,0,0,.24)}
+  .sign-head{min-width:0}
+  .lines{flex:0 0 auto}
+  .stn{min-width:0}
+  .matrix, .row, .dest{min-width:0}
+  .row{
+    grid-template-columns:52px 32px minmax(0,1fr) 58px 72px;
+    gap:8px;
+  }
+  .dest{
+    word-break:keep-all; overflow-wrap:break-word;
+    letter-spacing:.7px; line-height:1.35;
+  }
+  .dest small{word-break:keep-all; overflow-wrap:break-word}
+  .eta, .st{white-space:nowrap}
+  .train{transform-origin:left bottom}
+
+  @media (max-width:900px){
+    .hero{ grid-template-columns:1fr; gap:18px; padding-top:32px }
+    .scene{ height:300px }
+    .train{ scale:.9 }
+  }
+  @media (max-width:700px){
+    .nav{flex-wrap:wrap; gap:10px 14px}
+    .clock{margin-left:auto}
+    .brand{max-width:calc(100% - 126px)}
+    .sign-head{flex-wrap:wrap; gap:8px}
+    .stn{flex:1 1 180px}
+    .xfer{margin-left:auto}
+    .train{ scale:.82 }
+  }
+  @media (max-width:560px){
+    .nav{padding:12px 20px}
+    .brand .mark{width:32px;height:32px;font-size:17px; flex:0 0 32px}
+    .brand{font-size:15px}
+    .brand small{font-size:10.5px}
+    .clock{font-size:12px; padding:4px 8px}
+    .hero{padding:28px 20px 14px}
+    .hero h1{font-size:clamp(29px, 8vw, 34px); line-height:1.18}
+    .hero p.lead{font-size:14px; line-height:1.75}
+    .sign-head{padding:10px 12px}
+    .lines .ln{width:26px;height:26px;font-size:12px}
+    .xfer{font-size:10px; padding:4px 7px}
+    .matrix{padding:10px 12px}
+    .row{
+      grid-template-columns:48px 30px minmax(0,1fr) 44px;
+      gap:7px; padding:10px 0;
+    }
+    .row .ln{width:24px;height:24px; min-width:24px}
+    .ord{font-size:10px; letter-spacing:.2px}
+    .dest{font-size:12.5px; letter-spacing:.1px; line-height:1.38}
+    .dest small{font-size:10px; line-height:1.35}
+    .eta{font-size:13px}
+    .st{grid-column:3 / -1; justify-self:end; font-size:9.5px; padding:3px 8px; max-width:100%}
+    .ticker{height:30px}
+    .ticker .flow{left:64px; font-size:11px}
+    .platform{padding:0 20px}
+    .scene{height:300px}
+    .crowd{transform:scale(.92); transform-origin:center bottom}
+    .lines-grid{grid-template-columns:1fr; gap:14px; padding-bottom:34px}
+    .card{min-height:142px; padding:16px 15px 15px 82px}
+    .card .name{font-size:15.5px}
+    .card .desc{font-size:12.5px}
+  }
+  @media (max-width:380px){
+    .nav{padding:10px 16px}
+    .hero, .platform, .lines-grid{padding-left:16px; padding-right:16px}
+    .brand{max-width:calc(100% - 112px)}
+    .clock{font-size:11px; letter-spacing:.5px}
+    .sign-head .lines{gap:5px}
+    .row{grid-template-columns:42px 28px minmax(0,1fr) 40px; gap:6px}
+    .row .ln{width:22px;height:22px;min-width:22px;font-size:10px}
+    .dest{font-size:12px}
+    .eta{font-size:12px}
+    .st{font-size:9px}
+    .scene{height:285px}
+    .crowd{transform:scale(.86); transform-origin:center bottom}
+    .card{padding-left:74px; padding-right:13px}
+    .card .bar{width:62px}
+    .card::before, .card::after{left:50px}
+    .card .ln{left:14px; width:32px; height:32px; min-width:32px; font-size:13px}
+    .card .meta{padding-right:0}
+    .card .meta::after{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">본문 바로가기</a>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="mark">H</div>
+      <div>
+        Hi-course
+        <small>영주제일고 교육과정 환승역</small>
+      </div>
+    </div>
+    <div class="clock" id="clock" aria-live="polite">00:00:00</div>
+  </div>
+</header>
+
+<main id="main" class="tunnel">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div>
+      <h1>학생 한 명을 위한<br><span>맞춤 교육과정</span> 환승역.</h1>
+      <p class="lead">
+        영주제일고등학교의 모든 교육과정 자원을 하나의 환승역에서 만나보세요.
+        Hscredit, 에듀넷, 경북고교학점제지원센터 등 다양한 교육과정 노선이 한 곳에서 연결됩니다.
+      </p>
+    </div>
+
+    <!-- LED Sign -->
+    <div class="sign" role="region" aria-label="환승역 LED 안내판">
+      <div class="sign-head">
+        <div class="lines" aria-hidden="true">
+          <div class="ln l1">1</div>
+          <div class="ln l2">2</div>
+          <div class="ln l3">3</div>
+          <div class="ln l4">4</div>
+          <div class="ln l5">5</div>
+          <div class="ln l6">6</div>
+          <div class="ln l7">7</div>
+        </div>
+        <div class="stn">
+          <b>영주제일고 교육과정역</b>
+          <small>YEONGJU-JEIL HI-COURSE TRANSFER STATION</small>
+        </div>
+        <div class="xfer">TRANSFER · 환승</div>
+      </div>
+
+      <div class="matrix" aria-label="열차 안내">
+        <div class="row">
+          <div class="ord">이번열차</div>
+          <div class="ln l1">1</div>
+          <div class="dest">1호선 · Hscredit 방면
+            <small>수강신청 · 이수현황</small>
+          </div>
+          <div class="eta arr">진입</div>
+          <div class="st now">ARRIVING</div>
+        </div>
+        <div class="row">
+          <div class="ord">다음열차</div>
+          <div class="ln l2">2</div>
+          <div class="dest">2호선 · 에듀넷 방면
+            <small>교수학습자료 · 교육정보</small>
+          </div>
+          <div class="eta soon">3분</div>
+          <div class="st wait">WAIT</div>
+        </div>
+        <div class="row">
+          <div class="ord">그다음</div>
+          <div class="ln l3">3</div>
+          <div class="dest">3호선 · 경북지원센터 방면
+            <small>고교학점제 지원센터</small>
+          </div>
+          <div class="eta">7분</div>
+          <div class="st">정시</div>
+        </div>
+      </div>
+
+      <div class="ticker">
+        <div class="tag">NOTICE</div>
+        <div class="flow">
+          안전을 위해 노란 선 뒤에서 기다려 주십시오 · Please stand behind the yellow line ·
+          환승은 1호선부터 7호선까지 전 노선에서 가능합니다 · 다음 열차는 곧 도착합니다
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PLATFORM SCENE ============ -->
+  <section class="platform" aria-hidden="true">
+    <div class="scene moving" id="scene">
+      <div class="lamps"></div>
+      <div class="catenary"></div>
+
+      <div class="track-area">
+        <div class="rail r1"></div>
+        <div class="rail r2"></div>
+        <div class="third-rail"></div>
+        <div class="ties"></div>
+      </div>
+
+      <div class="platform-floor"></div>
+      <div class="tactile"></div>
+      <div class="platform-line"></div>
+
+      <!-- TRAIN -->
+      <div class="train" id="train">
+
+        <!-- Lead car -->
+        <div class="car lead">
+          <div class="roof"></div>
+          <div class="antenna"></div>
+          <div class="panto"><i></i><span class="spark"></span></div>
+          <div class="nose-band"></div>
+          <div class="windshield">
+            <div class="driver"></div>
+          </div>
+          <div class="head up"></div>
+          <div class="head dn"></div>
+          <div class="beam"></div>
+          <div class="route-mark">H</div>
+          <div class="plate">H-101</div>
+          <div class="win lw1"></div>
+          <div class="win lw2"></div>
+          <div class="door left"><div class="gw"></div><div class="handle"></div></div>
+          <div class="door right"><div class="gw"></div><div class="handle"></div></div>
+          <div class="bogie b1"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          <div class="bogie b2"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          <div class="coupler"></div>
+        </div>
+
+        <!-- Mid car 1 -->
+        <div class="car">
+          <div class="roof"></div>
+          <div class="plate">H-102</div>
+          <div class="win w1"><span class="sil" style="left:6px"></span></div>
+          <div class="win w2"><span class="sil" style="left:8px"></span><span class="sil" style="left:24px"></span></div>
+          <div class="door left"><div class="gw"></div><div class="handle"></div></div>
+          <div class="door right"><div class="gw"></div><div class="handle"></div></div>
+          <div class="win w3"><span class="sil" style="left:10px"></span><span class="sil" style="left:26px"></span></div>
+          <div class="win w4"><span class="sil" style="left:8px"></span><span class="sil" style="left:24px"></span><span class="sil" style="left:38px"></span></div>
+          <div class="bogie b1"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          <div class="bogie b2"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          <div class="coupler"></div>
+        </div>
+
+        <!-- Mid car 2 -->
+        <div class="car">
+          <div class="roof"></div>
+          <div class="plate">H-103</div>
+          <div class="win w1"><span class="sil" style="left:8px"></span></div>
+          <div class="win w2"><span class="sil" style="left:6px"></span><span class="sil" style="left:22px"></span></div>
+          <div class="door left"><div class="gw"></div><div class="handle"></div></div>
+          <div class="door right"><div class="gw"></div><div class="handle"></div></div>
+          <div class="win w3"><span class="sil" style="left:8px"></span></div>
+          <div class="win w4"><span class="sil" style="left:6px"></span><span class="sil" style="left:22px"></span><span class="sil" style="left:38px"></span></div>
+          <div class="bogie b1"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          <div class="bogie b2"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          <div class="coupler"></div>
+        </div>
+
+        <!-- Mid car 3 (tail) -->
+        <div class="car">
+          <div class="roof"></div>
+          <div class="plate">H-104</div>
+          <div class="win w1"><span class="sil" style="left:6px"></span></div>
+          <div class="win w2"><span class="sil" style="left:10px"></span><span class="sil" style="left:26px"></span></div>
+          <div class="door left"><div class="gw"></div><div class="handle"></div></div>
+          <div class="door right"><div class="gw"></div><div class="handle"></div></div>
+          <div class="win w3"><span class="sil" style="left:12px"></span></div>
+          <div class="win w4"><span class="sil" style="left:8px"></span><span class="sil" style="left:24px"></span></div>
+          <div class="bogie b1"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          <div class="bogie b2"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+        </div>
+
+      </div>
+
+      <!-- CROWD (waiting + boarding + alighting) -->
+      <div class="crowd">
+
+        <!-- Waiting (idle) -->
+        <div class="person uniform" style="left:5%"><div class="shadow"></div><div class="hair"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div><div class="backpack"></div></div>
+
+        <div class="person b suit" style="left:12%"><div class="shadow"></div><div class="hair brown"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div></div>
+
+        <div class="person c red long" style="left:19%"><div class="shadow"></div><div class="hair long"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div><div class="bag-l"></div></div>
+
+        <div class="person mustard light" style="left:26%"><div class="shadow"></div><div class="hair brown"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div><div class="phone"></div></div>
+
+        <!-- Boarding 1 — walks right toward nearest door -->
+        <div class="person b board emerald" style="left:34%; --boardX:90px" data-role="board">
+          <div class="shadow"></div><div class="hair"></div><div class="h"></div>
+          <div class="b1"></div><div class="arm l"></div><div class="arm r"></div>
+          <div class="l1"></div><div class="l2"></div>
+          <div class="bag-r"></div>
+        </div>
+
+        <!-- Alighting 1 — appears at door (door of mid car 1 ≈ 360px from left) and walks left -->
+        <div class="person alight purple" style="left:42%; --alightX:-110px" data-role="alight">
+          <div class="shadow"></div><div class="hair long"></div><div class="h"></div>
+          <div class="b1"></div><div class="arm l"></div><div class="arm r"></div>
+          <div class="l1"></div><div class="l2"></div>
+          <div class="bag-l"></div>
+        </div>
+
+        <!-- Waiting -->
+        <div class="person uniform" style="left:48%"><div class="shadow"></div><div class="hair"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div><div class="backpack"></div></div>
+
+        <div class="person b pink dark" style="left:55%"><div class="shadow"></div><div class="hair long"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div></div>
+
+        <!-- Boarding 2 -->
+        <div class="person c board charcoal cap" style="left:62%; --boardX:70px" data-role="board">
+          <div class="shadow"></div><div class="hair cap"></div><div class="h"></div>
+          <div class="b1"></div><div class="arm l"></div><div class="arm r"></div>
+          <div class="l1"></div><div class="l2"></div>
+          <div class="phone"></div>
+        </div>
+
+        <!-- Alighting 2 — appears at mid car 2 door ≈ 660px, walks right then off -->
+        <div class="person alight beige gray" style="left:70%; --alightX:90px" data-role="alight">
+          <div class="shadow"></div><div class="hair gray"></div><div class="h"></div>
+          <div class="b1"></div><div class="arm l"></div><div class="arm r"></div>
+          <div class="l1"></div><div class="l2"></div>
+          <div class="lug"></div>
+        </div>
+
+        <!-- Waiting -->
+        <div class="person navy" style="left:77%"><div class="shadow"></div><div class="hair brown"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div><div class="backpack"></div></div>
+
+        <!-- Boarding 3 -->
+        <div class="person b board olive" style="left:83%; --boardX:50px" data-role="board">
+          <div class="shadow"></div><div class="hair brown"></div><div class="h"></div>
+          <div class="b1"></div><div class="arm l"></div><div class="arm r"></div>
+          <div class="l1"></div><div class="l2"></div>
+          <div class="bag-r"></div>
+        </div>
+
+        <!-- Waiting -->
+        <div class="person c uniform" style="left:90%"><div class="shadow"></div><div class="hair"></div><div class="h"></div><div class="b1"></div><div class="arm l"></div><div class="arm r"></div><div class="l1"></div><div class="l2"></div></div>
+
+        <!-- Alighting 3 — appears at last car door ≈ 950px and walks right off -->
+        <div class="person alight green" style="left:95%; --alightX:30px" data-role="alight">
+          <div class="shadow"></div><div class="hair brown"></div><div class="h"></div>
+          <div class="b1"></div><div class="arm l"></div><div class="arm r"></div>
+          <div class="l1"></div><div class="l2"></div>
+          <div class="phone"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ LINES (Cards) ============ -->
+  <section id="lines" class="lines-grid" aria-label="노선 안내">
+    <a class="card" data-line="1" href="https://www.hscredit.kr/" target="_blank" rel="noopener" data-name="Hscredit">
+      <div class="bar"></div>
+      <div class="head"><div class="ln">1</div><div class="name">1호선 · Hscredit</div></div>
+      <div class="desc">고교학점제 통합 시스템 · 수강신청과 이수현황을 한눈에.</div>
+      <div class="meta">승차권 · hscredit.kr</div>
+    </a>
+    <a class="card" data-line="2" href="https://www.edunet.net/" target="_blank" rel="noopener" data-name="에듀넷">
+      <div class="bar"></div>
+      <div class="head"><div class="ln">2</div><div class="name">2호선 · 에듀넷</div></div>
+      <div class="desc">교수학습자료·교육정보 종합 포털.</div>
+      <div class="meta">승차권 · edunet.net</div>
+    </a>
+    <a class="card" data-line="3" href="https://www.gbe.kr/hcc/" target="_blank" rel="noopener" data-name="경북고교학점제지원센터">
+      <div class="bar"></div>
+      <div class="head"><div class="ln">3</div><div class="name">3호선 · 경북지원센터</div></div>
+      <div class="desc">경상북도교육청 고교학점제지원센터.</div>
+      <div class="meta">승차권 · gbe.kr/hcc</div>
+    </a>
+    <a class="card" data-line="4" href="https://www.gbe.kr/com/" target="_blank" rel="noopener" data-name="공동교육과정">
+      <div class="bar"></div>
+      <div class="head"><div class="ln">4</div><div class="name">4호선 · 공동교육과정</div></div>
+      <div class="desc">학교 간 공동교육과정 운영 안내.</div>
+      <div class="meta">승차권 · gbe.kr/com</div>
+    </a>
+    <a class="card" data-line="5" href="#" data-name="교육과정나침반">
+      <div class="bar"></div>
+      <div class="head"><div class="ln">5</div><div class="name">5호선 · 나침반</div></div>
+      <div class="desc">자체 개발 진로·교육과정 길찾기 앱.</div>
+      <div class="meta">예정 · 곧 개통</div>
+    </a>
+    <a class="card" data-line="6" href="#" data-name="제일나비">
+      <div class="bar"></div>
+      <div class="head"><div class="ln">6</div><div class="name">6호선 · 제일나비</div></div>
+      <div class="desc">학생 활동·동아리 매칭 자체 앱.</div>
+      <div class="meta">예정 · 곧 개통</div>
+    </a>
+    <a class="card" data-line="7" href="#" data-name="하이핏16">
+      <div class="bar"></div>
+      <div class="head"><div class="ln">7</div><div class="name">7호선 · 하이핏16</div></div>
+      <div class="desc">학습성향·진로적합도 진단 도구.</div>
+      <div class="meta">예정 · 곧 개통</div>
+    </a>
+  </section>
+
+  <footer id="about">
+    © 영주제일고등학교 교육과정부 · Hi-course Transfer Station
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  // Clock
+  function tick(){
+    const d = new Date();
+    const z = n => String(n).padStart(2,'0');
+    const el = document.getElementById('clock');
+    if(el) el.textContent = `${z(d.getHours())}:${z(d.getMinutes())}:${z(d.getSeconds())}`;
+  }
+  tick(); setInterval(tick, 1000);
+
+  // Toast
+  const toast = document.getElementById('toast');
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 1600);
+  }
+  document.querySelectorAll('.card').forEach(c => {
+    c.addEventListener('click', (e) => {
+      const name = c.dataset.name || '서비스';
+      if(c.getAttribute('href') === '#'){
+        e.preventDefault();
+        showToast(`${name} — 곧 개통됩니다`);
+      } else {
+        showToast(`열차가 곧 출발합니다 — ${name}`);
+      }
+    });
+  });
+
+  // Respect reduced motion
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.getElementById('scene')?.classList.add('reduced');
+  }
+</script>
+</body>
+</html>

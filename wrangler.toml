@@ -1,0 +1,5 @@
+# Cloudflare Pages / Wrangler configuration
+# Update the name if you want a different Pages project slug.
+name = "hi-course-transfer-station"
+compatibility_date = "2026-05-27"
+pages_build_output_dir = "dist"

@@ -1,0 +1,21 @@
+{
+  "name": "hi-course-transfer-station",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "영주제일고 Hi-course 교육과정 플랫폼",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs dist"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "cloudflare-pages",
+    "static-site",
+    "hi-course",
+    "yeongju-jeil"
+  ]
+}
